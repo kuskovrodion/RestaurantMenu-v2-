@@ -81,6 +81,15 @@ class RegistrationViewController: UIViewController {
                     print(error)
                     return
                 }
+                let ref = Database.database().reference()
+                let values = ["Email" : email, "Password" : password]
+                ref.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                    if err != nil {
+                        print (err)
+                        return
+                    }
+                    print ("SAVED")
+                })
             }
     }
     
