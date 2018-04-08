@@ -81,9 +81,12 @@ class RegistrationViewController: UIViewController {
                     print(error)
                     return
                 }
+                
+                guard let uid = user?.uid else { return }
                 let ref = Database.database().reference()
+                let usersRef = ref.child("Users").child(uid)
                 let values = ["Email" : email, "Password" : password]
-                ref.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                usersRef.updateChildValues(values, withCompletionBlock: { (err, ref) in
                     if err != nil {
                         print (err)
                         return
