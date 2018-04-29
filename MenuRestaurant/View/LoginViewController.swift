@@ -1,8 +1,7 @@
 import UIKit
-import Firebase
 
-class RegistrationViewController: UIViewController {
-
+class LoginViewController: UIViewController {
+    
     var firFunc: FirebaseFunctions?
     
     override func viewDidLoad() {
@@ -11,9 +10,7 @@ class RegistrationViewController: UIViewController {
         addSubwies()
         setRegistrationContainer()
         setRegisterButton()
-        FirebaseFunctions.sharedInstance.test = self
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(toLoginController))
-        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(toRegistrationController))
     }
     
     func addSubwies() {
@@ -75,10 +72,9 @@ class RegistrationViewController: UIViewController {
         button.backgroundColor = .white
         button.setTitle("Registration", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(firFunc, action: #selector(FirebaseFunctions.saveUser), for: .touchUpInside)
+        button.addTarget(firFunc, action: #selector(FirebaseFunctions.loginUser), for: .touchUpInside)
         return button
     }()
-    
     
     func setRegisterButton() {
         registrationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -86,7 +82,6 @@ class RegistrationViewController: UIViewController {
         registrationButton.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 2/3).isActive = true
         registrationButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
-    
     
     func setRegistrationContainer() {
         containerView.backgroundColor = UIColor.white.withAlphaComponent(0.1)
@@ -122,10 +117,10 @@ class RegistrationViewController: UIViewController {
         fieldPasswordSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
     
-    @objc func toLoginController() {
-        let newMessageController = LoginViewController()
+    @objc func toRegistrationController() {
+        let newMessageController = RegistrationViewController()
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
     }
-    
+
 }

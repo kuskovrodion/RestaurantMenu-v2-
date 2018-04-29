@@ -44,6 +44,16 @@ class Drink {
     }
 }
 
+class Test: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    func test (){
+        print("asdasd")
+    }
+}
+
 
 
 
