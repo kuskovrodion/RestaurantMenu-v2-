@@ -8,10 +8,12 @@ class FirebaseFunctions {
     static let sharedInstance = FirebaseFunctions()
     private init(){}
 
-    var test: RegistrationViewController?
+    var rvc: RegistrationViewController?
+    var lvc: LoginViewController?
+    
 
     @objc func saveUser() {
-        guard let email = test?.emailTextField.text, let password = test?.passwordTextField.text else {
+        guard let email = rvc?.emailTextField.text, let password = rvc?.passwordTextField.text else {
             print ("invalid")
             return
         }
@@ -35,16 +37,15 @@ class FirebaseFunctions {
     }
     
     @objc func loginUser() {
-        guard let email = test?.emailTextField.text, let password = test?.passwordTextField.text else {
+        guard let email = lvc?.emailTextField.text, let password = lvc?.passwordTextField.text else {
             print ("invalid")
             return
         }
         
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if user != nil {
-                print("SUCCESS?")
                 self.xd?.test()
-                print("DA")
+                print("SUCCESS")
                 
             } else {
                 let err = error?.localizedDescription

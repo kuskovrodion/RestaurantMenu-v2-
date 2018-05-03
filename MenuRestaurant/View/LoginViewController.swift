@@ -10,13 +10,14 @@ class LoginViewController: UIViewController {
         addSubwies()
         setRegistrationContainer()
         setRegisterButton()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(toRegistrationController))
+        FirebaseFunctions.sharedInstance.lvc = self
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Registration", style: .plain, target: self, action: #selector(toRegistrationController))
     }
     
     func addSubwies() {
         self.view.addSubview(mainLabel)
         self.view.addSubview(containerView)
-        self.view.addSubview(registrationButton)
+        self.view.addSubview(loginButton)
     }
     
     let mainLabel: UILabel = {
@@ -24,7 +25,7 @@ class LoginViewController: UIViewController {
         label.frame = CGRect(x: 36, y: 40, width: 300, height: 40)
         label.textColor = .white
         label.textAlignment = .center
-        label.text = "Registration"
+        label.text = "Login"
         return label
     }()
     
@@ -64,23 +65,23 @@ class LoginViewController: UIViewController {
         return separator
     }()
     
-    lazy var registrationButton: UIButton = {
+    lazy var loginButton: UIButton = {
         self.firFunc = FirebaseFunctions.sharedInstance
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 7
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
-        button.setTitle("Registration", for: .normal)
+        button.setTitle("Login", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(firFunc, action: #selector(FirebaseFunctions.loginUser), for: .touchUpInside)
         return button
     }()
     
     func setRegisterButton() {
-        registrationButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        registrationButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 10).isActive = true
-        registrationButton.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 2/3).isActive = true
-        registrationButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 10).isActive = true
+        loginButton.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 2/3).isActive = true
+        loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     func setRegistrationContainer() {

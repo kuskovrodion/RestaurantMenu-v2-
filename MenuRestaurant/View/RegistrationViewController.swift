@@ -11,7 +11,7 @@ class RegistrationViewController: UIViewController {
         addSubwies()
         setRegistrationContainer()
         setRegisterButton()
-        FirebaseFunctions.sharedInstance.test = self
+        FirebaseFunctions.sharedInstance.rvc = self
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(toLoginController))
         
     }
