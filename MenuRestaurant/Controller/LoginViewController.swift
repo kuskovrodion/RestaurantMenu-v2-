@@ -1,16 +1,22 @@
 import UIKit
+import Firebase
 
 class LoginViewController: UIViewController {
     
-    var firFunc: FirebaseFunctions?
+    
+    
+    var msc: MainScreenViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .yellow
         addSubwies()
         setRegistrationContainer()
-        setRegisterButton()
-        FirebaseFunctions.sharedInstance.lvc = self
+        setButtons()
+//        setButton()
+
+
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Registration", style: .plain, target: self, action: #selector(toRegistrationController))
     }
     
@@ -66,18 +72,20 @@ class LoginViewController: UIViewController {
     }()
     
     lazy var loginButton: UIButton = {
-        self.firFunc = FirebaseFunctions.sharedInstance
+//        self.firFunc = FirebaseFunctions.sharedInstance
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 7
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
         button.setTitle("Login", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(firFunc, action: #selector(FirebaseFunctions.loginUser), for: .touchUpInside)
+        button.addTarget(self, action: #selector(loginUser), for: .touchUpInside)
+
         return button
     }()
     
-    func setRegisterButton() {
+    
+    func setButtons() {
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 10).isActive = true
         loginButton.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 2/3).isActive = true
@@ -119,9 +127,32 @@ class LoginViewController: UIViewController {
     }
     
     @objc func toRegistrationController() {
-        let newMessageController = RegistrationViewController()
-        let navController = UINavigationController(rootViewController: newMessageController)
+        let regController = RegistrationViewController()
+        let navController = UINavigationController(rootViewController: regController)
         present(navController, animated: true, completion: nil)
+    }
+    
+    @objc func toMainScreenViewController() {
+        let regController = MainScreenViewController()
+        let navController = UINavigationController(rootViewController: regController)
+        present(navController, animated: true, completion: nil)
+    }
+    
+    @objc func loginUser() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            print ("invalid")
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            if user != nil {
+                self.dismiss(animated: true, completion: nil)
+                print("SUCCESS")
+            } else {
+                let err = error?.localizedDescription
+                print (err ?? "")
+            }
+        }
     }
 
 }

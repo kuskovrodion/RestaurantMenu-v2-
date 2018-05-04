@@ -49,9 +49,7 @@ class Test: UIViewController {
         super.viewDidLoad()
     }
     
-    func test (){
-        print("asdasd")
-    }
+
 }
 
 

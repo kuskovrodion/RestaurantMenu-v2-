@@ -2,8 +2,6 @@ import UIKit
 import Firebase
 
 class RegistrationViewController: UIViewController {
-
-    var firFunc: FirebaseFunctions?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -11,7 +9,6 @@ class RegistrationViewController: UIViewController {
         addSubwies()
         setRegistrationContainer()
         setRegisterButton()
-        FirebaseFunctions.sharedInstance.rvc = self
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(toLoginController))
         
     }
@@ -67,15 +64,18 @@ class RegistrationViewController: UIViewController {
         return separator
     }()
     
+    
+    
     lazy var registrationButton: UIButton = {
-        self.firFunc = FirebaseFunctions.sharedInstance
+        
+//        self.firFunc = FirebaseFunctions.sharedInstance
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 7
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
         button.setTitle("Registration", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(firFunc, action: #selector(FirebaseFunctions.saveUser), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveUser), for: .touchUpInside)
         return button
     }()
     
@@ -120,6 +120,31 @@ class RegistrationViewController: UIViewController {
         fieldPasswordSeparator.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor).isActive = true
         fieldPasswordSeparator.widthAnchor.constraint(equalTo: containerView.widthAnchor, constant: -40).isActive = true
         fieldPasswordSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+    }
+    
+    @objc func saveUser() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
+            print ("invalid")
+            return
+        }
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            if error != nil {
+                print(error ?? "")
+                return
+            }
+            guard let uid = user?.uid else { return }
+            let ref = Database.database().reference()
+            let usersRef = ref.child("Users").child(uid)
+            let values = ["Email" : email, "Password" : password]
+            usersRef.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                if err != nil {
+                    print (err ?? "")
+                    return
+                }
+                print ("SAVED")
+                self.dismiss(animated: true, completion: nil)
+            })
+        }
     }
     
     @objc func toLoginController() {

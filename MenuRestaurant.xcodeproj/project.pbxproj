@@ -12,7 +12,6 @@
 		224CAE9120719E900049BB6A /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224CAE9020719E900049BB6A /* Model.swift */; };
 		22B7CD2B2072AECD00BABEA8 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B7CD2A2072AECD00BABEA8 /* RegistrationViewController.swift */; };
 		22E3F2C920961C2F00D60337 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E3F2C820961C2F00D60337 /* LoginViewController.swift */; };
-		22E3F2CB209626ED00D60337 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E3F2CA209626ED00D60337 /* Controller.swift */; };
 		22E3F2CD209655CC00D60337 /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E3F2CC209655CC00D60337 /* MainScreenViewController.swift */; };
 		22F15C8920718444000B68E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F15C8820718444000B68E8 /* AppDelegate.swift */; };
 		22F15C8E20718444000B68E8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22F15C8C20718444000B68E8 /* Main.storyboard */; };
@@ -26,7 +25,6 @@
 		224CAE9020719E900049BB6A /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		22B7CD2A2072AECD00BABEA8 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		22E3F2C820961C2F00D60337 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		22E3F2CA209626ED00D60337 /* Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 		22E3F2CC209655CC00D60337 /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewController.swift; sourceTree = "<group>"; };
 		22F15C8520718444000B68E8 /* MenuRestaurant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MenuRestaurant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22F15C8820718444000B68E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -55,7 +53,9 @@
 		2218D502207A928E00A4CBCA /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				22E3F2CA209626ED00D60337 /* Controller.swift */,
+				22B7CD2A2072AECD00BABEA8 /* RegistrationViewController.swift */,
+				22E3F2C820961C2F00D60337 /* LoginViewController.swift */,
+				22E3F2CC209655CC00D60337 /* MainScreenViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -79,9 +79,6 @@
 		22B7CD292072AE2D00BABEA8 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				22B7CD2A2072AECD00BABEA8 /* RegistrationViewController.swift */,
-				22E3F2C820961C2F00D60337 /* LoginViewController.swift */,
-				22E3F2CC209655CC00D60337 /* MainScreenViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -279,7 +276,6 @@
 				22F15C8920718444000B68E8 /* AppDelegate.swift in Sources */,
 				2218D507207A956E00A4CBCA /* Service.swift in Sources */,
 				224CAE9120719E900049BB6A /* Model.swift in Sources */,
-				22E3F2CB209626ED00D60337 /* Controller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
