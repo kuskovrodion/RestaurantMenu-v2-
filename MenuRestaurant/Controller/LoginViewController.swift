@@ -3,9 +3,10 @@ import Firebase
 
 class LoginViewController: UIViewController {
     
-    
-    
+    var service: Service?
     var msc: MainScreenViewController?
+
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -13,9 +14,6 @@ class LoginViewController: UIViewController {
         addSubwies()
         setRegistrationContainer()
         setButtons()
-//        setButton()
-
-
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Registration", style: .plain, target: self, action: #selector(toRegistrationController))
     }
@@ -24,6 +22,7 @@ class LoginViewController: UIViewController {
         self.view.addSubview(mainLabel)
         self.view.addSubview(containerView)
         self.view.addSubview(loginButton)
+        self.view.addSubview(anonButton)
     }
     
     let mainLabel: UILabel = {
@@ -84,12 +83,27 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    lazy var anonButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .clear
+        button.setTitle("Go as anonym", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(anonymAuth), for: .touchUpInside)
+        return button
+    }()
+    
     
     func setButtons() {
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 10).isActive = true
         loginButton.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 2/3).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        anonButton.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor).isActive = true
+        anonButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 10).isActive = true
+        anonButton.widthAnchor.constraint(equalTo: loginButton.widthAnchor, multiplier: 2/3).isActive = true
+        anonButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     func setRegistrationContainer() {
@@ -138,17 +152,45 @@ class LoginViewController: UIViewController {
         present(navController, animated: true, completion: nil)
     }
     
+
+    
+    @objc func anonymAuth() {
+        self.service = Service.sharedInstance
+        self.service?.customActivityIndicatory(self.view, startAnimate: true)
+        Auth.auth().signInAnonymously() { (user, error) in
+            if error != nil {
+                self.service?.customActivityIndicatory(self.view, startAnimate: false)
+                print (error ?? "")
+                return
+            } else {
+                print ("User anon uid: \(user?.uid)")
+                self.service?.customActivityIndicatory(self.view, startAnimate: false)
+                self.toMainScreenViewController()
+                
+//                   self.navigationItem.title = dictionary["Email"] as? String
+            }
+        }
+
+
+    }
+    
     @objc func loginUser() {
+        self.service = Service.sharedInstance
+        self.service?.customActivityIndicatory(self.view, startAnimate: true)
         guard let email = emailTextField.text, let password = passwordTextField.text else {
             print ("invalid")
             return
         }
         
+
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            
             if user != nil {
+                self.service?.customActivityIndicatory(self.view, startAnimate: false)
                 self.dismiss(animated: true, completion: nil)
                 print("SUCCESS")
             } else {
+                self.service?.customActivityIndicatory(self.view, startAnimate: false)
                 let err = error?.localizedDescription
                 print (err ?? "")
             }

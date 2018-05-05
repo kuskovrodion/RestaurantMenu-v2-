@@ -3,6 +3,8 @@ import Firebase
 
 class RegistrationViewController: UIViewController {
     
+    var service: Service?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .yellow
@@ -123,12 +125,15 @@ class RegistrationViewController: UIViewController {
     }
     
     @objc func saveUser() {
+        self.service = Service.sharedInstance
+        self.service?.customActivityIndicatory(self.view, startAnimate: true)
         guard let email = emailTextField.text, let password = passwordTextField.text else {
             print ("invalid")
             return
         }
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if error != nil {
+                self.service?.customActivityIndicatory(self.view, startAnimate: false)
                 print(error ?? "")
                 return
             }
@@ -141,14 +146,21 @@ class RegistrationViewController: UIViewController {
                     print (err ?? "")
                     return
                 }
+                self.service?.customActivityIndicatory(self.view, startAnimate: false)
                 print ("SAVED")
-                self.dismiss(animated: true, completion: nil)
+                self.toMainScreen()
             })
         }
     }
     
     @objc func toLoginController() {
         let newMessageController = LoginViewController()
+        let navController = UINavigationController(rootViewController: newMessageController)
+        present(navController, animated: true, completion: nil)
+    }
+    
+    @objc func toMainScreen() {
+        let newMessageController = MainScreenViewController()
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
     }

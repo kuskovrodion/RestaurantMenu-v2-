@@ -3,12 +3,12 @@ import UIKit
 import Firebase
 
 class User {
-    var userLogin: String
-    var userPassword: String
+    var userLogin: String?
+    var userPassword: String?
     
-    init (userLogin: String, userPassword: String) {
-        self.userLogin = userLogin
-        self.userPassword = userPassword
+    init (dictionary: [String: AnyObject]) {
+        self.userLogin = dictionary["login"] as? String
+        self.userPassword = dictionary["pass"] as? String
     }
 }
 

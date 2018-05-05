@@ -7,12 +7,23 @@ class MainScreenViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        
+        checkIfUserIsLoggedIn()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func checkIfUserIsLoggedIn() {
+        if Auth.auth().currentUser?.uid == nil {
+            perform(#selector(handleLogout), with: nil, afterDelay: 0)
+        } else {
+            let uid = Auth.auth().currentUser?.uid
+            Database.database().reference().child("Users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String : AnyObject] {
+                    print(snapshot)
+                    self.navigationItem.title = dictionary["Email"] as? String
+                } else {
+                    self.navigationItem.title = "anonymous"
+                }
+            }, withCancel: nil)
+        }
     }
     
     
@@ -27,20 +38,7 @@ class MainScreenViewController: UIViewController {
         let loginController = LoginViewController()
         let lc = UINavigationController(rootViewController: loginController)
         present(lc, animated: true, completion: nil)
-        
-//        let newMessageController = LoginViewController()
-//        let navController = UINavigationController(rootViewController: newMessageController)
-//        present(navController, animated: true, completion: nil)
-    }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
-    */
 
 }
