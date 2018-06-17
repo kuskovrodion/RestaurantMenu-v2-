@@ -18,11 +18,16 @@ class LoginViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Registration", style: .plain, target: self, action: #selector(toRegistrationController))
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true )
+    }
+    
     func addSubwies() {
         self.view.addSubview(mainLabel)
         self.view.addSubview(containerView)
         self.view.addSubview(loginButton)
         self.view.addSubview(anonButton)
+        self.view.addSubview(resetPWButton)
     }
     
     let mainLabel: UILabel = {
@@ -71,7 +76,6 @@ class LoginViewController: UIViewController {
     }()
     
     lazy var loginButton: UIButton = {
-//        self.firFunc = FirebaseFunctions.sharedInstance
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 7
         button.setTitleColor(.black, for: .normal)
@@ -93,6 +97,16 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    lazy var resetPWButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .clear
+        button.setTitle("Forgot password?", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(toResetPasswordViewController), for: .touchUpInside)
+        return button
+    }()
+    
     
     func setButtons() {
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -104,6 +118,11 @@ class LoginViewController: UIViewController {
         anonButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 10).isActive = true
         anonButton.widthAnchor.constraint(equalTo: loginButton.widthAnchor, multiplier: 2/3).isActive = true
         anonButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        resetPWButton.centerXAnchor.constraint(equalTo: anonButton.centerXAnchor).isActive = true
+        resetPWButton.topAnchor.constraint(equalTo: anonButton.bottomAnchor, constant: 10).isActive = true
+        resetPWButton.widthAnchor.constraint(equalTo: anonButton.widthAnchor, multiplier: 1).isActive = true
+        resetPWButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     func setRegistrationContainer() {
@@ -148,6 +167,12 @@ class LoginViewController: UIViewController {
     
     @objc func toMainScreenViewController() {
         let regController = MainScreenViewController()
+        let navController = UINavigationController(rootViewController: regController)
+        present(navController, animated: true, completion: nil)
+    }
+    
+    @objc func toResetPasswordViewController() {
+        let regController = ResetPasswordViewController()
         let navController = UINavigationController(rootViewController: regController)
         present(navController, animated: true, completion: nil)
     }

@@ -15,6 +15,10 @@ class RegistrationViewController: UIViewController {
         
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true )
+    }
+    
     func addSubwies() {
         self.view.addSubview(mainLabel)
         self.view.addSubview(containerView)
@@ -33,7 +37,6 @@ class RegistrationViewController: UIViewController {
     let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 15
         view.layer.masksToBounds = true
         return view
     }()
@@ -69,8 +72,6 @@ class RegistrationViewController: UIViewController {
     
     
     lazy var registrationButton: UIButton = {
-        
-//        self.firFunc = FirebaseFunctions.sharedInstance
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 7
         button.setTitleColor(.black, for: .normal)
