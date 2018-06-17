@@ -16,7 +16,7 @@ class RegistrationViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true )
+        self.view.endEditing(true)
     }
     
     func addSubwies() {
@@ -135,9 +135,12 @@ class RegistrationViewController: UIViewController {
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if error != nil {
                 self.service?.customActivityIndicatory(self.view, startAnimate: false)
-                print(error ?? "")
-                return
+                let alert = UIAlertController(title: "Registration Error", message: "Please check that you have entered your login and password correctly.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                print (error ?? "")
             }
+            
             guard let uid = user?.uid else { return }
             let ref = Database.database().reference()
             let usersRef = ref.child("Users").child(uid)

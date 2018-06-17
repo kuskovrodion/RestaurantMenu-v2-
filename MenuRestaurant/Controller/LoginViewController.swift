@@ -206,18 +206,16 @@ class LoginViewController: UIViewController {
             print ("invalid")
             return
         }
-        
-
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-            
             if user != nil {
                 self.service?.customActivityIndicatory(self.view, startAnimate: false)
                 self.dismiss(animated: true, completion: nil)
                 print("SUCCESS")
             } else {
                 self.service?.customActivityIndicatory(self.view, startAnimate: false)
-                let err = error?.localizedDescription
-                print (err ?? "")
+                let alert = UIAlertController(title: "Login Error", message: "Please check that you have entered your login and password correctly.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
