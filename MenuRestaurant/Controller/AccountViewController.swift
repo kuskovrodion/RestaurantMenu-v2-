@@ -60,8 +60,9 @@ class AccountViewController: UIViewController {
             }else {
                 let alertView = UIAlertView(title: "Delete Account", message: "You have successfully deleted your acoount. We are sorry to see you leaving us this way.", delegate: self, cancelButtonTitle: "OK, Thanks")
                 alertView.show()
-                let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Login")
-                self.present(vc, animated: true, completion: nil)
+                let loginController = LoginViewController()
+                let lc = UINavigationController(rootViewController: loginController)
+                self.present(lc, animated: true, completion: nil)
             }
         })
     }
