@@ -3,25 +3,39 @@ import Firebase
 
 class MainScreenViewController: UITableViewController {
     
-    var dishes = ["1","2","3","4","5"]
-
+    var dishes = [Dish]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
         tableView.register(DishCell.self, forCellReuseIdentifier: "cellID")
         self.view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(goToAcc))
+        inserting()
         checkIfUserIsLoggedIn()
-        //----------
-//        let tabBarController = UITabBarController()
-    
-        
+        print(dishes)
     }
 
+    func inserting() {
+        Database.database().reference().child("Dish").observe(.childAdded) { (snapshot) in
+            DispatchQueue.main.async {
+                let newDish = Dish(snapshot: snapshot)
+                self.dishes.insert(newDish, at: 0)
+                let indexPath = IndexPath(row: 0, section: 0)
+                self.tableView.insertRows(at: [indexPath], with: .top)
+                print(snapshot)
+            }
+        }
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! DishCell
-        cell.textLabel!.text = "\(dishes[indexPath.row])"
+        let cell: UITableViewCell = DishCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "cellID")
+        let dish = dishes[indexPath.row ]
+        cell.textLabel?.text = dish.dishName
+        cell.detailTextLabel?.text = dish.dishDesc
+        
         return cell
     }
     
@@ -29,17 +43,11 @@ class MainScreenViewController: UITableViewController {
         return dishes.count
     }
     
-//    @objc func addDishButton() {
-//        let addDishController = AddDishViewController()
-//        let lc = UINavigationController(rootViewController: addDishController)
-//        present(lc, animated: true, completion: nil)
-//    }
-    
-        @objc func goToAcc() {
-            let addDishController = AccountViewController()
-            let lc = UINavigationController(rootViewController: addDishController)
-            present(lc, animated: true, completion: nil)
-        }
+    @objc func goToAcc() {
+        let addDishController = AddDishViewController()
+        let lc = UINavigationController(rootViewController: addDishController)
+        present(lc, animated: true, completion: nil)
+    }
     
     func checkIfUserIsLoggedIn() {
         if Auth.auth().currentUser?.uid == nil {
@@ -70,8 +78,5 @@ class MainScreenViewController: UITableViewController {
         present(lc, animated: true, completion: nil)
 
     }
-    
-    
-
 
 }

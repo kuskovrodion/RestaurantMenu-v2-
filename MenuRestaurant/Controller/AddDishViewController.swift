@@ -1,5 +1,5 @@
 import UIKit
-
+import Firebase
 class AddDishViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -9,11 +9,17 @@ class AddDishViewController: UIViewController {
         addBackButton()
         setFields()
         setSaveButton()
+        setRegisterButton()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     func addSubwies() {
         self.view.addSubview(containerView)
         self.view.addSubview(saveButton)
+        self.view.addSubview(deleteAccountButton)
     }
     
     func addBackButton() {
@@ -28,6 +34,24 @@ class AddDishViewController: UIViewController {
 
     @objc func backAction() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    lazy var deleteAccountButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.layer.cornerRadius = 7
+        button.setTitleColor(.black, for: .normal)
+        button.setTitle("Delete account?", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(deleteUser), for: .touchUpInside)
+        return button
+    }()
+    
+    func setRegisterButton() {
+        deleteAccountButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        deleteAccountButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor,constant: 10).isActive = true
+        deleteAccountButton.widthAnchor.constraint(equalTo: saveButton.widthAnchor).isActive = true
+        deleteAccountButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        deleteAccountButton.addTarget(self, action: #selector(deleteUser), for: .touchUpInside)
     }
     
     let containerView: UIView = {
@@ -64,7 +88,7 @@ class AddDishViewController: UIViewController {
         button.backgroundColor = .white
         button.setTitle("Save", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-//        button.addTarget(self, action: #selector(saveUser), for: .touchUpInside)
+        button.addTarget(self, action: #selector(checkAndSaveDish), for: .touchUpInside)
         return button
     }()
     
@@ -98,6 +122,27 @@ class AddDishViewController: UIViewController {
         dishDesc.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1/4).isActive = true
     }
     
+    @objc func deleteUser() {
+        let user = Auth.auth().currentUser
+        user?.delete(completion: { (error) in
+            if let error = error{
+                print(error.localizedDescription)
+            }else {
+                let alertView = UIAlertView(title: "Delete Account", message: "You have successfully deleted your acoount. We are sorry to see you leaving us this way.", delegate: self, cancelButtonTitle: "OK, Thanks")
+                alertView.show()
+                let loginController = LoginViewController()
+                let lc = UINavigationController(rootViewController: loginController)
+                self.present(lc, animated: true, completion: nil)
+            }
+        })
+    }
+    
+    @objc func checkAndSaveDish() {
+        if dishName.text != "" && dishDesc.text != "" {
+            let dish = Dish(dishName: dishName.text!, dishDesc: dishDesc.text!)
+            dish.saveIntoDatabase()
+        }
+    }
     
     
     

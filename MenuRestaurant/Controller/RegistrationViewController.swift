@@ -128,10 +128,12 @@ class RegistrationViewController: UIViewController {
     @objc func saveUser() {
         self.service = Service.sharedInstance
         self.service?.customActivityIndicatory(self.view, startAnimate: true)
+        
         guard let email = emailTextField.text, let password = passwordTextField.text else {
             print ("invalid")
             return
         }
+        
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             if error != nil {
                 self.service?.customActivityIndicatory(self.view, startAnimate: false)

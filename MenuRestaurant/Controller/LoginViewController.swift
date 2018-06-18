@@ -177,8 +177,6 @@ class LoginViewController: UIViewController {
         present(navController, animated: true, completion: nil)
     }
     
-
-    
     @objc func anonymAuth() {
         self.service = Service.sharedInstance
         self.service?.customActivityIndicatory(self.view, startAnimate: true)
@@ -191,12 +189,8 @@ class LoginViewController: UIViewController {
                 print ("User anon uid: \(user?.uid)")
                 self.service?.customActivityIndicatory(self.view, startAnimate: false)
                 self.toMainScreenViewController()
-                
-//                   self.navigationItem.title = dictionary["Email"] as? String
             }
         }
-
-
     }
     
     @objc func loginUser() {

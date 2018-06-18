@@ -9,5 +9,5 @@ target 'MenuRestaurant' do
     pod 'Firebase/Database'
     pod 'Firebase/Auth'
     pod 'Firebase/Storage'
-
+    pod 'SwiftyJSON', '~> 4.0'
 end

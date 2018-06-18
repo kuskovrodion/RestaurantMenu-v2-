@@ -12,6 +12,8 @@ class AccountViewController: UIViewController {
         
         setRegistrationContainer()
         setRegisterButton()
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButton))
     }
     
     let registrationContainer: UIView = {
@@ -65,5 +67,9 @@ class AccountViewController: UIViewController {
                 self.present(lc, animated: true, completion: nil)
             }
         })
+    }
+    
+    @objc func cancelButton() {
+        self.dismiss(animated: true, completion: nil)
     }
 }

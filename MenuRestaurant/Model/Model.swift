@@ -1,6 +1,7 @@
 // Builder maket for entities
 import UIKit
 import Firebase
+import SwiftyJSON
 
 class User {
     var userLogin: String?
@@ -10,21 +11,28 @@ class User {
         self.userLogin = dictionary["login"] as? String
         self.userPassword = dictionary["pass"] as? String
     }
+    
 }
 
 class Dish {
     var dishName: String
     var dishDesc: String
-    var dishWeight: Double
-    var dishCost: Double
-    var dishImage: UIImage
     
-    init (dishName: String, dishDesc: String, dishWeight: Double, dishCost: Double, dishImage: UIImage) {
+    init (dishName: String, dishDesc: String) {
         self.dishName = dishName
         self.dishDesc = dishDesc
-        self.dishWeight = dishWeight
-        self.dishCost = dishCost
-        self.dishImage = dishImage
+    }
+    
+    init (snapshot: DataSnapshot) {
+        let json = JSON(snapshot.value ?? "")
+        self.dishName = json["Description"].stringValue
+        self.dishDesc = json["Name"].stringValue
+    }
+    
+    func saveIntoDatabase() {
+        let dishRef = Database.database().reference().child("Dish").childByAutoId()
+        let newDishDict = ["Name" : self.dishName, "Description": self.dishDesc]
+        dishRef.setValue(newDishDict)
     }
 }
 
