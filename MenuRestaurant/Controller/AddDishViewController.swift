@@ -12,8 +12,14 @@ class AddDishViewController: UIViewController {
         setRegisterButton()
     }
     
+
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    
+    @objc func handleGesture() {
+        print ("Deleted")
     }
     
     func addSubwies() {
@@ -141,9 +147,11 @@ class AddDishViewController: UIViewController {
         if dishName.text != "" && dishDesc.text != "" {
             let dish = Dish(dishName: dishName.text!, dishDesc: dishDesc.text!)
             dish.saveIntoDatabase()
+            dismiss(animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Ooops...", message: "One of fields cannot be blank", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
-    
-    
-    
 }

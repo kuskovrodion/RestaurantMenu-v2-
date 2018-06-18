@@ -7,8 +7,6 @@ class MainScreenViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
         tableView.register(DishCell.self, forCellReuseIdentifier: "cellID")
         self.view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
@@ -77,6 +75,13 @@ class MainScreenViewController: UITableViewController {
         let lc = UINavigationController(rootViewController: loginController)
         present(lc, animated: true, completion: nil)
 
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     }
 
 }
